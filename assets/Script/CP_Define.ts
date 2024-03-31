@@ -3,6 +3,14 @@ import { _decorator, Component } from 'cc';
 
 const { ccclass } = _decorator;
 
+export enum State {
+  LOGIN,
+  LOBBY,
+  WAITING,
+  GAME_PLAY,
+  SORT_CARD
+}
+
 @ccclass('CP_Define')
 export default class CP_Define extends Component {
   static SETTING = {
@@ -26,4 +34,6 @@ export default class CP_Define extends Component {
       },
     },
   };
+
+  static DEFAULT_SERVER_URL = '13poker.garbagedee.edu.kg:2345';
 }

@@ -2,12 +2,12 @@
   "ver": "1.1.40",
   "importer": "prefab",
   "imported": true,
-  "uuid": "fd0ae296-9254-4fe9-8d93-e6f1dab75046",
+  "uuid": "b9e9f0dd-4044-4ebd-8870-ae460a3b5cf4",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "InGame"
+    "syncNodeName": "Card_back"
   }
 }
