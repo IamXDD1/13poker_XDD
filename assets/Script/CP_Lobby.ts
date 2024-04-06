@@ -2,6 +2,7 @@
 import { _decorator, Component, Button, Node, EditBox, Prefab, NodePool } from 'cc';
 import CP_GameManager from './CP_GameManager';
 import { State } from './CP_Define';
+import { Room } from './CP_Protocol';
 const { ccclass, property } = _decorator;
 
 @ccclass('CP_Lobby')
@@ -36,10 +37,23 @@ export default class CP_Lobby extends Component {
     /** 房間 List */
     private m_roomList: Node[] = [];
 
+    private m_roomInfo: Room[] = [];
+
     /** 存想加入房間的ID */
     private m_joinRoomId: number = -1;
     
     private m_gameManager: CP_GameManager = null;
+
+    /** 創建房間按鈕點擊事件 */
+    private m_createRoomBtnClickedEvent = () => {
+        this.OnCreateRoomBtnClicked();
+    };
+    
+    /** 加入房間按鈕點擊事件，需要用parent名稱判斷index */
+    private m_joinRoomBtnClickedEvent = (btn: Button) => {
+        this.OnJoinRoomBtnClicked(Number(btn.node.parent.name));
+        console.log(btn.node.parent.name)
+    };
 
     public Start(gameManager: CP_GameManager) {
         this.m_gameManager = gameManager;
@@ -47,27 +61,19 @@ export default class CP_Lobby extends Component {
 
     protected onEnable(): void {
         console.log('Lobby enable')
-        this.m_createRoomBtn.node.on(Button.EventType.CLICK, () => {
-            this.OnCreateRoomBtnClicked();
-        }, this);
+        this.m_createRoomBtn.node.on(Button.EventType.CLICK, this.m_createRoomBtnClickedEvent, this);
 
         this.m_roomParentNode.children.forEach((child) => {
-            child.getChildByName('JoinBtn').on(Button.EventType.CLICK, () => {
-                this.OnJoinRoomBtnClicked(Number(child.name));
-            }, this);
+            child.getChildByName('JoinBtn').on(Button.EventType.CLICK, this.m_joinRoomBtnClickedEvent, this);
         });
     }
 
     protected onDisable(): void {
         console.log('Lobby disable')
-        this.m_createRoomBtn.node.off(Button.EventType.CLICK, () => {
-            console.log('Create Room Btn Off');
-        }, this);
+        this.m_createRoomBtn.node.off(Button.EventType.CLICK, this.m_createRoomBtnClickedEvent, this);
 
         this.m_roomParentNode.children.forEach((child) => {
-            child.getChildByName('JoinBtn').off(Button.EventType.CLICK, () => {
-                console.log(`Room ${child.name} Btn Off`);
-            }, this);
+            child.getChildByName('JoinBtn').off(Button.EventType.CLICK, this.m_joinRoomBtnClickedEvent, this);
         });
     }
 
@@ -98,6 +104,10 @@ export default class CP_Lobby extends Component {
         // 如果拿到的房間數量不同要更新
 
         // 滿房也要顯示、按鈕變成灰色不可按
+    }
+
+    public SetRoomsInfo(info: Room[]) {
+        this.m_roomInfo = info
     }
 }
 

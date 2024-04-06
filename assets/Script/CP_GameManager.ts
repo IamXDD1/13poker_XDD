@@ -6,6 +6,7 @@ import CP_Lobby from './CP_Lobby';
 import CP_GamePlay from './CP_GamePlay';
 import CP_SortCard from './CP_SortCard';
 import CP_Waiting from './CP_Waiting';
+import { CP_S2C_PROTOCOL, S2C_DATA } from './CP_Protocol';
 
 const { ccclass, property } = _decorator;
 
@@ -200,6 +201,24 @@ export default class CP_GameManager extends Component {
                 break;
         }
     }
+
+    public ReceiveAck(data: S2C_DATA) {
+        switch (data.Type) {
+            case CP_S2C_PROTOCOL.ROOM_MESSAGE:
+                this.m_lobby.SetRoomsInfo(data.Rooms);
+                break;
+            case CP_S2C_PROTOCOL.LOCATION_MESSAGE:
+                // GM用，判斷玩家STATE
+                break;
+            case CP_S2C_PROTOCOL.CARD_MESSAGE:
+                this.m_gamePlay.SetCardInfo(data.Cards);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    
 
 }
 

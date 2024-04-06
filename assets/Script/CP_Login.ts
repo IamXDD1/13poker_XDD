@@ -28,22 +28,22 @@ export default class CP_Login extends Component {
 
     private m_gameManager: CP_GameManager = null;
 
+    private m_loginBtnClickedEvent = () => {
+        this.OnLoginBtnClicked();
+    };
+
     public Start(gameManager: CP_GameManager) {
         this.m_gameManager = gameManager;
     }
 
     protected onEnable(): void {
         console.log('Login enable')
-        this.m_loginBtn.node.on(Button.EventType.CLICK, () => {
-            this.OnLoginBtnClicked();
-        }, this);
+        this.m_loginBtn.node.on(Button.EventType.CLICK, this.m_loginBtnClickedEvent, this);
     }
 
     protected onDisable(): void {
         console.log('Login disable')
-        this.m_loginBtn.node.off(Button.EventType.CLICK, () => {
-            console.log('Login Btn Off');
-        }, this);
+        this.m_loginBtn.node.off(Button.EventType.CLICK, this.m_loginBtnClickedEvent, this);
     }
 
     /** Login按下後動作 */

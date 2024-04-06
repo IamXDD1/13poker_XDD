@@ -40,6 +40,12 @@ export default class CP_GamePlay extends Component {
     
     private m_gameManager: CP_GameManager = null;
 
+    private m_playersCards: number[][] = null;
+
+    private m_exitGameBtnClickedEvent = () => {
+        this.OnExitGameBtnClicked();
+    };
+
     public Start(gameManager: CP_GameManager) {
         this.m_gameManager = gameManager;
         this.m_sortCard.Start(gameManager);
@@ -47,16 +53,12 @@ export default class CP_GamePlay extends Component {
 
     protected onEnable(): void {
         console.log('Game Play enable')
-        this.m_exitGameBtn.node.on(Button.EventType.CLICK, () => {
-            this.OnExitGameBtnClicked();
-        }, this);
+        this.m_exitGameBtn.node.on(Button.EventType.CLICK, this.m_exitGameBtnClickedEvent, this);
     }
 
     protected onDisable(): void {
         console.log('Game Play disable')
-        this.m_exitGameBtn.node.off(Button.EventType.CLICK, () => {
-            console.log('Exit Game Btn Off');
-        }, this);
+        this.m_exitGameBtn.node.off(Button.EventType.CLICK, this.m_exitGameBtnClickedEvent, this);
     }
 
     public OnExitGameBtnClicked() {
@@ -66,6 +68,10 @@ export default class CP_GamePlay extends Component {
 
     public RefreshView(dt: number) {
         // 遊玩畫面
+    }
+
+    public SetCardInfo(playersCards: number[][]) {
+        this.m_playersCards = playersCards;
     }
 }
 

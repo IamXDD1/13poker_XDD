@@ -27,6 +27,10 @@ export default class CP_Waiting extends Component {
     
     private m_gameManager: CP_GameManager = null;
 
+    private m_waitingRoomBtnClickedEvent = () => {
+        this.OnWaitingRoomBtnClicked();
+    };
+
     public Start(gameManager: CP_GameManager) {
         this.m_gameManager = gameManager;
         
@@ -34,34 +38,31 @@ export default class CP_Waiting extends Component {
 
     protected onEnable(): void {
         console.log('Waiting Room enable')
-        this.m_exitWaitingRoomBtn.node.on(Button.EventType.CLICK, () => {
-            this.OnWaitingRoomBtnClicked();
-        }, this);
+        this.m_exitWaitingRoomBtn.node.on(Button.EventType.CLICK, this.m_waitingRoomBtnClickedEvent, this);
     }
 
     protected onDisable(): void {
         console.log('Waiting Room disable')
-        this.m_exitWaitingRoomBtn.node.off(Button.EventType.CLICK, () => {
-            console.log('Exit Waiting Room Btn Off');
-        }, this);
+        this.m_exitWaitingRoomBtn.node.off(Button.EventType.CLICK, this.m_waitingRoomBtnClickedEvent, this);
     }
 
     public OnWaitingRoomBtnClicked() {
         console.log('Exit Waiting Room Btn Clicked');
+        this.m_gameManager.NextState(State.LOBBY);
         
-        let n = Math.random();
-        if (n < 0.334) {
-            this.m_gameManager.NextState(State.LOBBY);
-            console.log('State.LOBBY')
-        }
-        else if (n < 0.667) {
-            this.m_gameManager.NextState(State.GAME_PLAY);
-            console.log('State.GAME_PLAY')
-        }
-        else {
-            this.m_gameManager.NextState(State.SORT_CARD);
-            console.log('State.SORT_CARD')
-        }
+        // let n = Math.random();
+        // if (n < 0.334) {
+        //     this.m_gameManager.NextState(State.LOBBY);
+        //     console.log('State.LOBBY')
+        // }
+        // else if (n < 0.667) {
+        //     this.m_gameManager.NextState(State.GAME_PLAY);
+        //     console.log('State.GAME_PLAY')
+        // }
+        // else {
+        //     this.m_gameManager.NextState(State.SORT_CARD);
+        //     console.log('State.SORT_CARD')
+        // }
     }
 
     public RefreshView(dt: number) {
